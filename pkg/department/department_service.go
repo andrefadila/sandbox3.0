@@ -5,15 +5,15 @@ import (
 	"sandbox3.0/persistence/model"
 )
 
-type DepartmentRepository struct {
+type Repository struct {
 	db *gorm.DB
 }
 
-func NewDepartmentRepository(db *gorm.DB) *DepartmentRepository {
-	return &DepartmentRepository{db}
+func NewRepository(db *gorm.DB) *Repository {
+	return &Repository{db}
 }
 
-type DepartmentService interface {
+type Service interface {
 	GetDepartment(id int) (*model.Department, error)
 	GetDepartments() ([]*model.Department, error)
 	CreateDepartment(d *model.Department) error
@@ -21,8 +21,8 @@ type DepartmentService interface {
 	DeleteDepartment(id int) error
 }
 
-func (es *DepartmentRepository) GetDepartment(id int) (*model.Department, error) {
-	err := es.db.Table("department").Where("id = ?", id).First(&model.Department{}).Error
+func (r *Repository) GetDepartment(id int) (*model.Department, error) {
+	err := r.db.Table("departments").Where("id = ?", id).First(&model.Department{}).Error
 	if err != nil {
 		return nil, err
 	}
@@ -30,8 +30,8 @@ func (es *DepartmentRepository) GetDepartment(id int) (*model.Department, error)
 	return &model.Department{}, nil
 }
 
-func (es *DepartmentRepository) CreateDepartment(e *model.Department) error {
-	err := es.db.Create(&e).Error
+func (r *Repository) CreateDepartment(e *model.Department) error {
+	err := r.db.Create(&e).Error
 	if err != nil {
 		return err
 	}

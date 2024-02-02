@@ -1,28 +1,19 @@
 package task
 
-type Department struct {
-	ID   int
-	Name string
-}
+import (
+	"fmt"
 
-type Employee struct {
-	ID           int
-	Name         string
-	DepartmentId int
-}
+	"sandbox3.0/persistence/model"
+	"sandbox3.0/pkg/department"
+)
 
-type DepartmentService interface {
-	GetDepartment(id int) (*Department, error)
-	GetDepartments() ([]*Department, error)
-	CreateDepartment(d *Department) error
-	UpdateDepartment(d *Department) error
-	DeleteDepartment(id int) error
-}
-
-type EmployeeService interface {
-	GetEmployee(id int) (*Employee, error)
-	GetEmployees() ([]*Employee, error)
-	CreateEmployee(e *Employee) error
-	UpdateEmployee(e *Employee) error
-	DeleteEmployee(id int) error
+func Level3No1(deptRepo *department.Repository) {
+	// create a new department
+	department := &model.Department{
+		Name: "IT",
+	}
+	err := deptRepo.CreateDepartment(department)
+	if err != nil {
+		fmt.Println("Error: ", err.Error())
+	}
 }

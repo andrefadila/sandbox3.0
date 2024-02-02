@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	// "sandbox3.0/task"
 	"github.com/joho/godotenv"
+	"sandbox3.0/persistence"
+	"sandbox3.0/pkg/department"
+	"sandbox3.0/task"
 )
 
 func init() {
@@ -17,20 +19,24 @@ func init() {
 }
 
 func main() {
-	// task.Level1No2()
-	// task.Level1No3()
+	// mysql db config
+	dbHost := os.Getenv("DB_HOST")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbUser := os.Getenv("DB_USER")
+	dbName := os.Getenv("DB_NAME")
+	dbPort := os.Getenv("DB_PORT")
 
-	// nip, err := task.CreateNIP(task.Akhwat, 2024, 6, 10)
-	// fmt.Println(nip, err)
+	// check connection
+	db, dbErr := persistence.OpenMySqlConn(dbUser, dbPassword, dbHost, dbPort, dbName)
+	if dbErr != nil {
+		fmt.Println("Database error: ", dbErr.Error())
+	}
+	defer db.Close()
+	db.Automigrate()
 
-	// nips, err := task.GenerateNIPs(task.Akhwat, 2024, 6, 10, 1)
-	// fmt.Println(nips, err)
+	// initiate service
+	deptRepo := department.NewRepository(db.MysqlDB)
 
-	// nextNip, err := task.CreateNextNIP("ARN242-00000")
-	// fmt.Println(nextNip, err)
-
-	// nextNips, err := task.GenerateNextNIPs("ART242-00200", 10)
-	// fmt.Println(nextNips, err)
-
-	fmt.Println(os.Getenv("DB_HOST"))
+	// task
+	task.Level3No1(deptRepo)
 }

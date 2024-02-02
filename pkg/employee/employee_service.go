@@ -22,7 +22,7 @@ type EmployeeService interface {
 }
 
 func (es *EmployeeRepository) GetEmployee(id int) (*model.Employee, error) {
-	err := es.db.Table("employee").Where("id = ?", id).First(&model.Employee{}).Error
+	err := es.db.Table("employees").Where("id = ?", id).First(&model.Employee{}).Error
 	if err != nil {
 		return nil, err
 	}

@@ -13,6 +13,6 @@ func OpenMySqlConn(dbUser, dbPassword, dbHost, dbPort, dbName string) (*DB, erro
 	}
 
 	return &DB{
-		mysqlDB: db,
+		MysqlDB: db,
 	}, nil
 }

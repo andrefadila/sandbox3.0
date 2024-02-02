@@ -6,18 +6,18 @@ import (
 )
 
 type DB struct {
-	mysqlDB *gorm.DB
+	MysqlDB *gorm.DB
 }
 
 func (s *DB) Automigrate() error {
-	return s.mysqlDB.AutoMigrate(
+	return s.MysqlDB.AutoMigrate(
 		&model.Employee{},
 		&model.Department{},
 	)
 }
 
 func (s *DB) Close() error {
-	db, err := s.mysqlDB.DB()
+	db, err := s.MysqlDB.DB()
 	if err != nil {
 		return err
 	}
