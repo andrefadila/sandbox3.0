@@ -7,6 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	"sandbox3.0/persistence"
 	"sandbox3.0/pkg/department"
+	"sandbox3.0/pkg/employee"
 	"sandbox3.0/task"
 )
 
@@ -32,11 +33,12 @@ func main() {
 		fmt.Println("Database error: ", dbErr.Error())
 	}
 	defer db.Close()
-	db.Automigrate()
+	// db.Automigrate()
 
 	// initiate service
 	deptRepo := department.NewRepository(db.MysqlDB)
+	empRepo := employee.NewRepository(db.MysqlDB)
 
 	// task
-	task.Level3No1(deptRepo)
+	task.Level3No1(deptRepo, empRepo)
 }

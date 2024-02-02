@@ -38,3 +38,21 @@ func (r *Repository) CreateDepartment(e *model.Department) error {
 
 	return nil
 }
+
+func (r *Repository) UpdateDepartment(d *model.Department) error {
+	err := r.db.Model(&d).Where("id = ?", d.ID).Updates(&d).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (es *Repository) DeleteDepartment(d *model.Department) error {
+	err := es.db.Where("id = ?", d.ID).Delete(&d).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
