@@ -17,7 +17,7 @@ type Service interface {
 	GetDepartment(id int) (*model.Department, error)
 	GetDepartments() ([]*model.Department, error)
 	CreateDepartment(d *model.Department) error
-	CreateDepartments(d []*model.Department) error
+	CreateDepartments(d []model.Department) error
 	UpdateDepartment(d *model.Department) error
 	DeleteDepartment(id int) error
 }
@@ -50,8 +50,8 @@ func (r *Repository) CreateDepartment(dept *model.Department) error {
 	return nil
 }
 
-func (r *Repository) CreateDepartments(depts []*model.Department) error {
-	err := r.db.CreateInBatches(&depts, 10).Error
+func (r *Repository) CreateDepartments(depts []model.Department) error {
+	err := r.db.CreateInBatches(&depts, 5).Error
 	if err != nil {
 		return err
 	}

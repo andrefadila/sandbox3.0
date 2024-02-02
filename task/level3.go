@@ -8,11 +8,6 @@ import (
 	"sandbox3.0/pkg/employee"
 )
 
-// type Level3Data struct {
-// 	department model.Department
-// 	employees  []model.Employee
-// }
-
 func Level3No3a(deptRepo *department.Repository, empRepo *employee.Repository) {
 	// create a new department
 	department := &model.Department{
@@ -26,7 +21,7 @@ func Level3No3a(deptRepo *department.Repository, empRepo *employee.Repository) {
 
 	// create 2 new employee
 	employee1 := &model.Employee{
-		Name: "Fadila",
+		Name:         "Fadila",
 		DepartmentId: department.ID,
 	}
 	emp1Err := empRepo.CreateEmployee(employee1)
@@ -35,7 +30,7 @@ func Level3No3a(deptRepo *department.Repository, empRepo *employee.Repository) {
 	}
 
 	employee2 := &model.Employee{
-		Name: "Andre",
+		Name:         "Andre",
 		DepartmentId: department.ID,
 	}
 	emp2Err := empRepo.CreateEmployee(employee2)
@@ -61,12 +56,31 @@ func Level3No3b(deptRepo *department.Repository, empRepo *employee.Repository) {
 		fmt.Println("Error: ", getEmpErr.Error())
 		return
 	}
-	
+
 	for _, emp := range emps {
 		emp.DepartmentId = department.ID
 		updateErr := empRepo.UpdateEmployee(&emp)
 		if updateErr != nil {
 			fmt.Println("Error: ", updateErr.Error())
 		}
+	}
+}
+
+func Level3No4(deptRepo *department.Repository, empRepo *employee.Repository) {
+	var depts []model.Department
+	for i := 1; i <= 10; i++ {
+		depts = append(depts, model.Department{Name: fmt.Sprintf("IT %d", i)})
+	}
+
+	// create department
+	deptRepo.CreateDepartments(depts)
+
+	// create employees
+	for _, dept := range depts {
+		var emps []model.Employee
+		for i := 1; i <= 10; i++ {
+			emps = append(emps, model.Employee{Name: fmt.Sprintf("Employee %d", i), DepartmentId: dept.ID})
+		}
+		empRepo.CreateEmployees(emps)
 	}
 }

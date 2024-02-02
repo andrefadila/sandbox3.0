@@ -33,7 +33,7 @@ func main() {
 		fmt.Println("Database error: ", dbErr.Error())
 	}
 	defer db.Close()
-	// db.Automigrate()
+	db.Automigrate()
 
 	// initiate service
 	deptRepo := department.NewRepository(db.MysqlDB)
@@ -41,5 +41,6 @@ func main() {
 
 	// task
 	// task.Level3No3a(deptRepo, empRepo)
-	task.Level3No3b(deptRepo, empRepo)
+	// task.Level3No3b(deptRepo, empRepo)
+	task.Level3No4(deptRepo, empRepo)
 }

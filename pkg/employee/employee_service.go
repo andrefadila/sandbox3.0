@@ -17,6 +17,7 @@ type EmployeeService interface {
 	GetEmployee(id int) (*model.Employee, error)
 	GetEmployees() ([]model.Employee, error)
 	CreateEmployee(e *model.Employee) error
+	CreateEmployees(e []model.Employee) error
 	UpdateEmployee(e *model.Employee) error
 	DeleteEmployee(id int) error
 }
@@ -42,6 +43,15 @@ func (es *Repository) GetEmployees() ([]model.Employee, error) {
 
 func (es *Repository) CreateEmployee(e *model.Employee) error {
 	err := es.db.Create(&e).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *Repository) CreateEmployees(emps []model.Employee) error {
+	err := r.db.CreateInBatches(&emps, 5).Error
 	if err != nil {
 		return err
 	}
