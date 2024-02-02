@@ -7,10 +7,12 @@ import (
 
 func OpenMySqlConn(dbUser, dbPassword, dbHost, dbPort, dbName string) (*DB, error) {
 	dsn := dbUser + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{CreateBatchSize: 10})
 	if err != nil {
 		return nil, err
 	}
+
+	db.Session(&gorm.Session{CreateBatchSize: 10})
 
 	return &DB{
 		MysqlDB: db,

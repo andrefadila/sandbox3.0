@@ -15,7 +15,7 @@ func NewRepository(db *gorm.DB) *Repository {
 
 type EmployeeService interface {
 	GetEmployee(id int) (*model.Employee, error)
-	GetEmployees() ([]*model.Employee, error)
+	GetEmployees() ([]model.Employee, error)
 	CreateEmployee(e *model.Employee) error
 	UpdateEmployee(e *model.Employee) error
 	DeleteEmployee(id int) error
@@ -28,6 +28,16 @@ func (es *Repository) GetEmployee(id int) (*model.Employee, error) {
 	}
 
 	return &model.Employee{}, nil
+}
+
+func (es *Repository) GetEmployees() ([]model.Employee, error) {
+	var emps []model.Employee
+	err := es.db.Table("employees").Limit(10).Scan(&emps).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return emps, nil
 }
 
 func (es *Repository) CreateEmployee(e *model.Employee) error {

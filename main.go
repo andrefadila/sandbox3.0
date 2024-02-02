@@ -40,5 +40,6 @@ func main() {
 	empRepo := employee.NewRepository(db.MysqlDB)
 
 	// task
-	task.Level3No1(deptRepo, empRepo)
+	// task.Level3No3a(deptRepo, empRepo)
+	task.Level3No3b(deptRepo, empRepo)
 }

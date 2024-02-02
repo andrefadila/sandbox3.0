@@ -8,10 +8,15 @@ import (
 	"sandbox3.0/pkg/employee"
 )
 
-func Level3No1(deptRepo *department.Repository, empRepo *employee.Repository) {
+// type Level3Data struct {
+// 	department model.Department
+// 	employees  []model.Employee
+// }
+
+func Level3No3a(deptRepo *department.Repository, empRepo *employee.Repository) {
 	// create a new department
 	department := &model.Department{
-		Name: "IT",
+		Name: "IT A",
 	}
 	deptErr := deptRepo.CreateDepartment(department)
 	if deptErr != nil {
@@ -19,7 +24,7 @@ func Level3No1(deptRepo *department.Repository, empRepo *employee.Repository) {
 		return
 	}
 
-	// create new employee
+	// create 2 new employee
 	employee1 := &model.Employee{
 		Name: "Fadila",
 		DepartmentId: department.ID,
@@ -36,5 +41,32 @@ func Level3No1(deptRepo *department.Repository, empRepo *employee.Repository) {
 	emp2Err := empRepo.CreateEmployee(employee2)
 	if emp2Err != nil {
 		fmt.Println("Error: ", emp2Err.Error())
+	}
+}
+
+func Level3No3b(deptRepo *department.Repository, empRepo *employee.Repository) {
+	// create a new department
+	department := &model.Department{
+		Name: "IT B",
+	}
+	deptErr := deptRepo.CreateDepartment(department)
+	if deptErr != nil {
+		fmt.Println("Error: ", deptErr.Error())
+		return
+	}
+
+	// get and update employee to new department
+	emps, getEmpErr := empRepo.GetEmployees()
+	if getEmpErr != nil {
+		fmt.Println("Error: ", getEmpErr.Error())
+		return
+	}
+	
+	for _, emp := range emps {
+		emp.DepartmentId = department.ID
+		updateErr := empRepo.UpdateEmployee(&emp)
+		if updateErr != nil {
+			fmt.Println("Error: ", updateErr.Error())
+		}
 	}
 }
