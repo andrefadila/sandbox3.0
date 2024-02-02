@@ -1,15 +1,13 @@
 package employee
 
-type Employee struct {
-	ID           int
-	Name         string
-	DepartmentId int
-}
+import (
+	"sandbox3.0/persistence/model"
+)
 
 type EmployeeService interface {
-	GetEmployee(id int) (*Employee, error)
-	GetEmployees() ([]*Employee, error)
-	CreateEmployee(e *Employee) error
-	UpdateEmployee(e *Employee) error
+	GetEmployee(id int) (*model.Employee, error)
+	GetEmployees() ([]*model.Employee, error)
+	CreateEmployee(e *model.Employee) error
+	UpdateEmployee(e *model.Employee) error
 	DeleteEmployee(id int) error
 }

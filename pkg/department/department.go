@@ -1,14 +1,13 @@
 package department
 
-type Department struct {
-	ID   int
-	Name string
-}
+import (
+	"sandbox3.0/persistence/model"
+)
 
 type DepartmentService interface {
-	GetDepartment(id int) (*Department, error)
-	GetDepartments() ([]*Department, error)
-	CreateDepartment(d *Department) error
-	UpdateDepartment(d *Department) error
+	GetDepartment(id int) (*model.Department, error)
+	GetDepartments() ([]*model.Department, error)
+	CreateDepartment(d *model.Department) error
+	UpdateDepartment(d *model.Department) error
 	DeleteDepartment(id int) error
 }
