@@ -76,11 +76,12 @@ func Level3No4(deptRepo *department.Repository, empRepo *employee.Repository) {
 	deptRepo.CreateDepartments(depts)
 
 	// create employees
+	var emps []model.Employee
 	for _, dept := range depts {
-		var emps []model.Employee
 		for i := 1; i <= 10; i++ {
-			emps = append(emps, model.Employee{Name: fmt.Sprintf("Employee %d", i), DepartmentId: dept.ID})
+			emps = append(emps, model.Employee{Name: fmt.Sprintf("%s Employee %d ", dept.Name, i), DepartmentId: dept.ID})
 		}
 		empRepo.CreateEmployees(emps)
+		emps = nil
 	}
 }
