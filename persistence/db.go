@@ -15,3 +15,12 @@ func (s *DB) Automigrate() error {
 		&model.Department{},
 	)
 }
+
+func (s *DB) Close() error {
+	db, err := s.mysqlDB.DB()
+	if err != nil {
+		return err
+	}
+
+	return db.Close()
+}
