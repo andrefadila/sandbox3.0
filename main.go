@@ -21,14 +21,13 @@ func init() {
 
 func main() {
 	// mysql db config
-	dbHost := os.Getenv("DB_HOST")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbUser := os.Getenv("DB_USER")
-	dbName := os.Getenv("DB_NAME")
-	dbPort := os.Getenv("DB_PORT")
+	dbHost := os.Getenv("MYSQL_HOST")
+	dbPassword := os.Getenv("MYSQL_ROOT_PASSWORD")
+	dbUser := os.Getenv("MYSQL_USER")
+	dbName := os.Getenv("MYSQL_DATABASE")
 
 	// check connection
-	db, dbErr := persistence.OpenMySqlConn(dbUser, dbPassword, dbHost, dbPort, dbName)
+	db, dbErr := persistence.OpenMySqlConn(dbUser, dbPassword, dbHost, dbName)
 	if dbErr != nil {
 		fmt.Println("Database error: ", dbErr.Error())
 	}
