@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/joho/godotenv"
 	"sandbox3.0/persistence"
@@ -20,14 +19,8 @@ func init() {
 }
 
 func main() {
-	// mysql db config
-	dbHost := os.Getenv("MYSQL_HOST")
-	dbPassword := os.Getenv("MYSQL_ROOT_PASSWORD")
-	dbUser := os.Getenv("MYSQL_USER")
-	dbName := os.Getenv("MYSQL_DATABASE")
-
 	// check connection
-	db, dbErr := persistence.OpenMySqlConn(dbUser, dbPassword, dbHost, dbName)
+	db, dbErr := persistence.OpenMySqlConn()
 	if dbErr != nil {
 		fmt.Println("Database error: ", dbErr.Error())
 	}
