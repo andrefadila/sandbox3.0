@@ -5,8 +5,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"sandbox3.0/persistence"
-	"sandbox3.0/pkg/department"
-	"sandbox3.0/pkg/employee"
+	"sandbox3.0/repository"
 	"sandbox3.0/task"
 )
 
@@ -28,11 +27,10 @@ func main() {
 	db.Automigrate()
 
 	// initiate service
-	deptRepo := department.NewRepository(db.MysqlDB)
-	empRepo := employee.NewRepository(db.MysqlDB)
+	rs := repository.NewService(db.MysqlDB)
 
 	// task
-	// task.Level3No3a(deptRepo, empRepo)
-	// task.Level3No3b(deptRepo, empRepo)
-	task.Level3No4(deptRepo, empRepo)
+	// task.Level3No3a(repo)
+	// task.Level3No3b(repo)
+	task.Level3No4(rs)
 }
