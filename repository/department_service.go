@@ -5,12 +5,13 @@ import (
 )
 
 func (s *Service) GetDepartment(id int) (*model.Department, error) {
-	err := s.db.Table("departments").Where("id = ?", id).First(&model.Department{}).Error
+	var dept model.Department
+	err := s.db.Table("departments").Where("id = ?", id).First(&dept).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return &model.Department{}, nil
+	return &dept, nil
 }
 
 func (s *Service) GetDepartments() ([]model.Department, error) {

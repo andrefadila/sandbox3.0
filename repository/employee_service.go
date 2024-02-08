@@ -5,12 +5,13 @@ import (
 )
 
 func (s *Service) GetEmployee(id int) (*model.Employee, error) {
-	err := s.db.Table("employees").Where("id = ?", id).First(&model.Employee{}).Error
+	var emp model.Employee
+	err := s.db.Table("employees").Where("id = ?", id).First(&emp).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return &model.Employee{}, nil
+	return &emp, nil
 }
 
 func (s *Service) GetEmployees() ([]model.Employee, error) {
