@@ -52,7 +52,7 @@ func TestGetDepartment(t *testing.T) {
 	defer srv.Close()
 
 	// Create a new request
-	resp, err := http.Get("http://localhost:3030/departments/1")
+	resp, err := http.Get(fmt.Sprintf("%s/departments/1", srv.URL))
 	require.NoErrorf(t, err, "failed to send request: %v", err)
 
 	// Check the response status code
