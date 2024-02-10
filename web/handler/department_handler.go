@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -29,6 +30,7 @@ func (wh *WebHandler) GetDepartments(w http.ResponseWriter, r *http.Request) {
 
 func (wh *WebHandler) GetDepartment(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
+	fmt.Println("GetDepartment id: ", id)
 
 	// request validation
 	idInt, valErr := strconv.Atoi(id)
