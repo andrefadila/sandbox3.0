@@ -33,5 +33,8 @@ jobs:
     - name: Build
       run: go build
 
+    - name: Run Web Server
+      run: go run web/server.go
+
     - name: Test
       run: go test -v ./...
