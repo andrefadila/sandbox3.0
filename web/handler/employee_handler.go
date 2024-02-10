@@ -11,7 +11,7 @@ import (
 
 func (wh *WebHandler) GetEmployees(w http.ResponseWriter, r *http.Request) {
 	// get employees
-	depts, err := wh.rs.GetEmployees()
+	emps, err := wh.rs.GetEmployees()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -20,7 +20,7 @@ func (wh *WebHandler) GetEmployees(w http.ResponseWriter, r *http.Request) {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["employees"] = depts
+	response["employees"] = emps
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -40,7 +40,7 @@ func (wh *WebHandler) GetEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get employee
-	dept, err := wh.rs.GetEmployee(idInt)
+	emp, err := wh.rs.GetEmployee(idInt)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -49,7 +49,7 @@ func (wh *WebHandler) GetEmployee(w http.ResponseWriter, r *http.Request) {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["employee"] = dept
+	response["employee"] = emp
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -58,17 +58,17 @@ func (wh *WebHandler) GetEmployee(w http.ResponseWriter, r *http.Request) {
 }
 
 func (wh *WebHandler) CreateEmployee(w http.ResponseWriter, r *http.Request) {
-	var dept model.Employee
+	var emp model.Employee
 
 	// request validation
-	valErr := json.NewDecoder(r.Body).Decode(&dept)
+	valErr := json.NewDecoder(r.Body).Decode(&emp)
 	if valErr != nil {
 		http.Error(w, valErr.Error(), http.StatusBadRequest)
 		return
 	}
 
 	// create employee
-	err := wh.rs.CreateEmployee(&dept)
+	err := wh.rs.CreateEmployee(&emp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -77,7 +77,7 @@ func (wh *WebHandler) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["employee"] = dept
+	response["employee"] = emp
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -87,7 +87,7 @@ func (wh *WebHandler) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 
 func (wh *WebHandler) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	var dept model.Employee
+	var emp model.Employee
 
 	// request validation
 	idInt, val1Err := strconv.Atoi(id)
@@ -95,15 +95,15 @@ func (wh *WebHandler) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, val1Err.Error(), http.StatusBadRequest)
 		return
 	}
-	val2Err := json.NewDecoder(r.Body).Decode(&dept)
+	val2Err := json.NewDecoder(r.Body).Decode(&emp)
 	if val2Err != nil {
 		http.Error(w, val2Err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	// update employee
-	dept.ID = idInt
-	err := wh.rs.UpdateEmployee(&dept)
+	emp.ID = idInt
+	err := wh.rs.UpdateEmployee(&emp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -112,7 +112,7 @@ func (wh *WebHandler) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["employee"] = dept
+	response["employee"] = emp
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -122,7 +122,7 @@ func (wh *WebHandler) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 
 func (wh *WebHandler) DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	var dept model.Employee
+	var emp model.Employee
 
 	// request validation
 	idInt, valErr := strconv.Atoi(id)
@@ -132,8 +132,8 @@ func (wh *WebHandler) DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// delete employee
-	dept.ID = idInt
-	err := wh.rs.DeleteEmployee(&dept)
+	emp.ID = idInt
+	err := wh.rs.DeleteEmployee(&emp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
