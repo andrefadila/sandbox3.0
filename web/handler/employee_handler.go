@@ -9,9 +9,9 @@ import (
 	"sandbox3.0/persistence/model"
 )
 
-func (wh *WebHandler) GetDepartments(w http.ResponseWriter, r *http.Request) {
-	// get departments
-	depts, err := wh.rs.GetDepartments()
+func (wh *WebHandler) GetEmployees(w http.ResponseWriter, r *http.Request) {
+	// get employees
+	depts, err := wh.rs.GetEmployees()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -20,7 +20,7 @@ func (wh *WebHandler) GetDepartments(w http.ResponseWriter, r *http.Request) {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["departments"] = depts
+	response["employees"] = depts
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -28,9 +28,9 @@ func (wh *WebHandler) GetDepartments(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonRes)
 }
 
-func (wh *WebHandler) GetDepartment(w http.ResponseWriter, r *http.Request) {
+func (wh *WebHandler) GetEmployee(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	fmt.Println("GetDepartment id: ", id)
+	fmt.Println("GetEmployee id: ", id)
 
 	// request validation
 	idInt, valErr := strconv.Atoi(id)
@@ -39,8 +39,8 @@ func (wh *WebHandler) GetDepartment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get department
-	dept, err := wh.rs.GetDepartment(idInt)
+	// get employee
+	dept, err := wh.rs.GetEmployee(idInt)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -49,7 +49,7 @@ func (wh *WebHandler) GetDepartment(w http.ResponseWriter, r *http.Request) {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["department"] = dept
+	response["employee"] = dept
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -57,8 +57,8 @@ func (wh *WebHandler) GetDepartment(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonRes)
 }
 
-func (wh *WebHandler) CreateDepartment(w http.ResponseWriter, r *http.Request) {
-	var dept model.Department
+func (wh *WebHandler) CreateEmployee(w http.ResponseWriter, r *http.Request) {
+	var dept model.Employee
 
 	// request validation
 	valErr := json.NewDecoder(r.Body).Decode(&dept)
@@ -67,8 +67,8 @@ func (wh *WebHandler) CreateDepartment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// create department
-	err := wh.rs.CreateDepartment(&dept)
+	// create employee
+	err := wh.rs.CreateEmployee(&dept)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -77,7 +77,7 @@ func (wh *WebHandler) CreateDepartment(w http.ResponseWriter, r *http.Request) {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["department"] = dept
+	response["employee"] = dept
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -85,9 +85,9 @@ func (wh *WebHandler) CreateDepartment(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonRes)
 }
 
-func (wh *WebHandler) UpdateDepartment(w http.ResponseWriter, r *http.Request) {
+func (wh *WebHandler) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	var dept model.Department
+	var dept model.Employee
 
 	// request validation
 	idInt, val1Err := strconv.Atoi(id)
@@ -101,9 +101,9 @@ func (wh *WebHandler) UpdateDepartment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// update department
+	// update employee
 	dept.ID = idInt
-	err := wh.rs.UpdateDepartment(&dept)
+	err := wh.rs.UpdateEmployee(&dept)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -112,7 +112,7 @@ func (wh *WebHandler) UpdateDepartment(w http.ResponseWriter, r *http.Request) {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["department"] = dept
+	response["employee"] = dept
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -120,9 +120,9 @@ func (wh *WebHandler) UpdateDepartment(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonRes)
 }
 
-func (wh *WebHandler) DeleteDepartment(w http.ResponseWriter, r *http.Request) {
+func (wh *WebHandler) DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	var dept model.Department
+	var dept model.Employee
 
 	// request validation
 	idInt, valErr := strconv.Atoi(id)
@@ -131,9 +131,9 @@ func (wh *WebHandler) DeleteDepartment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// delete department
+	// delete employee
 	dept.ID = idInt
-	err := wh.rs.DeleteDepartment(&dept)
+	err := wh.rs.DeleteEmployee(&dept)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
