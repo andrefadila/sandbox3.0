@@ -19,7 +19,7 @@ func TestGetEmployees(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -55,7 +55,7 @@ func TestGetEmployee(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -91,7 +91,7 @@ func TestCreateEmployee(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -136,7 +136,7 @@ func TestUpdateEmployee(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -185,7 +185,7 @@ func TestDeleteEmployee(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler

@@ -19,7 +19,7 @@ func TestGetDepartments(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -55,7 +55,7 @@ func TestGetDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -91,7 +91,7 @@ func TestCreateDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -136,7 +136,7 @@ func TestUpdateDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -185,7 +185,7 @@ func TestDeleteDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.Automigrate()
+	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
