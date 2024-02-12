@@ -18,6 +18,8 @@ import (
 func TestGetDepartments(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -52,6 +54,8 @@ func TestGetDepartments(t *testing.T) {
 func TestGetDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -86,6 +90,8 @@ func TestGetDepartment(t *testing.T) {
 func TestCreateDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -97,7 +103,7 @@ func TestCreateDepartment(t *testing.T) {
 
 	// Send a POST request to create the department
 	var jsonStr = []byte(`{"name":"Dept Test"}`)
-	resp, err := http.Post(srv.URL + "/departments", "application/json", bytes.NewBuffer(jsonStr))
+	resp, err := http.Post(srv.URL+"/departments", "application/json", bytes.NewBuffer(jsonStr))
 	require.NoErrorf(t, err, "failed to send request: %v", err)
 
 	// Check the response status code
@@ -129,6 +135,8 @@ func TestCreateDepartment(t *testing.T) {
 func TestUpdateDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -140,7 +148,7 @@ func TestUpdateDepartment(t *testing.T) {
 
 	// Create a new request
 	reqBody := []byte(`{"name":"Updated Dept"}`)
-	req, err := http.NewRequest("PUT", srv.URL + "/departments/1", bytes.NewBuffer(reqBody))
+	req, err := http.NewRequest("PUT", srv.URL+"/departments/1", bytes.NewBuffer(reqBody))
 	require.NoErrorf(t, err, "failed to create request: %v", err)
 
 	// Send the request
@@ -176,6 +184,8 @@ func TestUpdateDepartment(t *testing.T) {
 func TestDeleteDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -187,7 +197,7 @@ func TestDeleteDepartment(t *testing.T) {
 
 	// Send a POST request to create the department
 	var jsonStr = []byte(`{"name":"Dept Test"}`)
-	respCreate, err := http.Post(srv.URL + "/departments", "application/json", bytes.NewBuffer(jsonStr))
+	respCreate, err := http.Post(srv.URL+"/departments", "application/json", bytes.NewBuffer(jsonStr))
 	require.NoErrorf(t, err, "failed to send request: %v", err)
 
 	// Parse the response body create
@@ -203,7 +213,7 @@ func TestDeleteDepartment(t *testing.T) {
 	require.NoErrorf(t, err, "failed to parse the department: %v", err)
 
 	// Create a new delete request
-	req, err := http.NewRequest("DELETE", fmt.Sprintf(srv.URL + "/departments/%d", dept.ID), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf(srv.URL+"/departments/%d", dept.ID), nil)
 	require.NoErrorf(t, err, "failed to create request: %v", err)
 
 	// Send the request

@@ -18,6 +18,8 @@ import (
 func TestGetEmployees(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -52,6 +54,8 @@ func TestGetEmployees(t *testing.T) {
 func TestGetEmployee(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -86,6 +90,8 @@ func TestGetEmployee(t *testing.T) {
 func TestCreateEmployee(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -97,7 +103,7 @@ func TestCreateEmployee(t *testing.T) {
 
 	// Send a POST request to create the employee
 	var jsonStr = []byte(`{"name":"Employee Test"}`)
-	resp, err := http.Post(srv.URL + "/employees", "application/json", bytes.NewBuffer(jsonStr))
+	resp, err := http.Post(srv.URL+"/employees", "application/json", bytes.NewBuffer(jsonStr))
 	require.NoErrorf(t, err, "failed to send request: %v", err)
 
 	// Check the response status code
@@ -129,6 +135,8 @@ func TestCreateEmployee(t *testing.T) {
 func TestUpdateEmployee(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -140,7 +148,7 @@ func TestUpdateEmployee(t *testing.T) {
 
 	// Create a new request
 	reqBody := []byte(`{"name":"Updated Employee"}`)
-	req, err := http.NewRequest("PUT", srv.URL + "/employees/1", bytes.NewBuffer(reqBody))
+	req, err := http.NewRequest("PUT", srv.URL+"/employees/1", bytes.NewBuffer(reqBody))
 	require.NoErrorf(t, err, "failed to create request: %v", err)
 
 	// Send the request
@@ -176,6 +184,8 @@ func TestUpdateEmployee(t *testing.T) {
 func TestDeleteEmployee(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
+	defer db.Close()
+	db.Automigrate()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
@@ -187,7 +197,7 @@ func TestDeleteEmployee(t *testing.T) {
 
 	// Send a POST request to create the employee
 	var jsonStr = []byte(`{"name":"Employee Test"}`)
-	respCreate, err := http.Post(srv.URL + "/employees", "application/json", bytes.NewBuffer(jsonStr))
+	respCreate, err := http.Post(srv.URL+"/employees", "application/json", bytes.NewBuffer(jsonStr))
 	require.NoErrorf(t, err, "failed to send request: %v", err)
 
 	// Parse the response body create
@@ -203,7 +213,7 @@ func TestDeleteEmployee(t *testing.T) {
 	require.NoErrorf(t, err, "failed to parse the employee: %v", err)
 
 	// Create a new delete request
-	req, err := http.NewRequest("DELETE", fmt.Sprintf(srv.URL + "/employees/%d", emp.ID), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf(srv.URL+"/employees/%d", emp.ID), nil)
 	require.NoErrorf(t, err, "failed to create request: %v", err)
 
 	// Send the request
