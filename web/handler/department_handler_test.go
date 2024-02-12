@@ -10,19 +10,25 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"sandbox3.0/persistence"
 	"sandbox3.0/persistence/model"
+	"sandbox3.0/repository"
 )
 
 func TestGetDepartments(t *testing.T) {
-	// Create a new instance of the WebHandler
-	wh := &WebHandler{}
+	// Initiate service
+	db, _ := persistence.OpenMySqlConn()
+	rs := repository.NewService(db.MysqlDB)
+
+	// Initiate web handler
+	wh := NewWebHandler(rs)
 
 	// Create a new test server
 	srv := httptest.NewServer(wh.RouteHandler())
 	defer srv.Close()
 
 	// Create a new request
-	resp, err := http.Get("http://localhost:3030/departments")
+	resp, err := http.Get(srv.URL + "/departments")
 	require.NoErrorf(t, err, "failed to send request: %v", err)
 
 	// Check the response status code
@@ -44,15 +50,19 @@ func TestGetDepartments(t *testing.T) {
 }
 
 func TestGetDepartment(t *testing.T) {
-	// Create a new instance of the WebHandler
-	wh := &WebHandler{}
+	// Initiate service
+	db, _ := persistence.OpenMySqlConn()
+	rs := repository.NewService(db.MysqlDB)
+
+	// Initiate web handler
+	wh := NewWebHandler(rs)
 
 	// Create a new test server
 	srv := httptest.NewServer(wh.RouteHandler())
 	defer srv.Close()
 
 	// Create a new request
-	resp, err := http.Get(fmt.Sprintf("%s/departments/1", srv.URL))
+	resp, err := http.Get(srv.URL + "/departments/1")
 	require.NoErrorf(t, err, "failed to send request: %v", err)
 
 	// Check the response status code
@@ -74,8 +84,12 @@ func TestGetDepartment(t *testing.T) {
 }
 
 func TestCreateDepartment(t *testing.T) {
-	// Create a new instance of the WebHandler
-	wh := &WebHandler{}
+	// Initiate service
+	db, _ := persistence.OpenMySqlConn()
+	rs := repository.NewService(db.MysqlDB)
+
+	// Initiate web handler
+	wh := NewWebHandler(rs)
 
 	// Create a new test server
 	srv := httptest.NewServer(wh.RouteHandler())
@@ -83,7 +97,7 @@ func TestCreateDepartment(t *testing.T) {
 
 	// Send a POST request to create the department
 	var jsonStr = []byte(`{"name":"Dept Test"}`)
-	resp, err := http.Post("http://localhost:3030/departments", "application/json", bytes.NewBuffer(jsonStr))
+	resp, err := http.Post(srv.URL + "/departments", "application/json", bytes.NewBuffer(jsonStr))
 	require.NoErrorf(t, err, "failed to send request: %v", err)
 
 	// Check the response status code
@@ -113,8 +127,12 @@ func TestCreateDepartment(t *testing.T) {
 }
 
 func TestUpdateDepartment(t *testing.T) {
-	// Create a new instance of the WebHandler
-	wh := &WebHandler{}
+	// Initiate service
+	db, _ := persistence.OpenMySqlConn()
+	rs := repository.NewService(db.MysqlDB)
+
+	// Initiate web handler
+	wh := NewWebHandler(rs)
 
 	// Create a new test server
 	srv := httptest.NewServer(wh.RouteHandler())
@@ -122,7 +140,7 @@ func TestUpdateDepartment(t *testing.T) {
 
 	// Create a new request
 	reqBody := []byte(`{"name":"Updated Dept"}`)
-	req, err := http.NewRequest("PUT", "http://localhost:3030/departments/1", bytes.NewBuffer(reqBody))
+	req, err := http.NewRequest("PUT", srv.URL + "/departments/1", bytes.NewBuffer(reqBody))
 	require.NoErrorf(t, err, "failed to create request: %v", err)
 
 	// Send the request
@@ -156,8 +174,12 @@ func TestUpdateDepartment(t *testing.T) {
 }
 
 func TestDeleteDepartment(t *testing.T) {
-	// Create a new instance of the WebHandler
-	wh := &WebHandler{}
+	// Initiate service
+	db, _ := persistence.OpenMySqlConn()
+	rs := repository.NewService(db.MysqlDB)
+
+	// Initiate web handler
+	wh := NewWebHandler(rs)
 
 	// Create a new test server
 	srv := httptest.NewServer(wh.RouteHandler())
@@ -165,14 +187,14 @@ func TestDeleteDepartment(t *testing.T) {
 
 	// Send a POST request to create the department
 	var jsonStr = []byte(`{"name":"Dept Test"}`)
-	respCreate, err := http.Post("http://localhost:3030/departments", "application/json", bytes.NewBuffer(jsonStr))
+	respCreate, err := http.Post(srv.URL + "/departments", "application/json", bytes.NewBuffer(jsonStr))
 	require.NoErrorf(t, err, "failed to send request: %v", err)
 
 	// Parse the response body create
 	respBodyCreate, bErr := io.ReadAll(respCreate.Body)
 	require.NoErrorf(t, bErr, "failed to read the response body: %v", bErr)
 	var responseCreate map[string]interface{}
-	err = json.Unmarshal(respBodyCreate, &responseCreate)
+	_ = json.Unmarshal(respBodyCreate, &responseCreate)
 	defer respCreate.Body.Close()
 	jsonData, err := json.Marshal(responseCreate["department"])
 	require.NoErrorf(t, err, "failed to marshal department: %v", err)
@@ -181,7 +203,7 @@ func TestDeleteDepartment(t *testing.T) {
 	require.NoErrorf(t, err, "failed to parse the department: %v", err)
 
 	// Create a new delete request
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("http://localhost:3030/departments/%d", dept.ID), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf(srv.URL + "/departments/%d", dept.ID), nil)
 	require.NoErrorf(t, err, "failed to create request: %v", err)
 
 	// Send the request
