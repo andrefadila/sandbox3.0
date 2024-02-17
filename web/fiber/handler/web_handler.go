@@ -15,10 +15,14 @@ func NewWebHandler(rs *repository.Service, app *fiber.App) *WebHandler {
 	return &WebHandler{rs, app}
 }
 
-func (wh *WebHandler) RegisterRoute() {
+func (wh *WebHandler) Start() {
+	// departments
 	wh.App.Get("/departments", wh.GetDepartments)
 	wh.App.Get("/departments/:id", wh.GetDepartment)
 	wh.App.Post("/departments", wh.CreateDepartment)
 	wh.App.Put("/departments/:id", wh.UpdateDepartment)
 	wh.App.Delete("/departments/:id", wh.DeleteDepartment)
+
+	// start listen
+	wh.App.Listen(":3030")
 }

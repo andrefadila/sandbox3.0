@@ -7,7 +7,7 @@ import (
 
 	"sandbox3.0/persistence"
 	"sandbox3.0/repository"
-	"sandbox3.0/web_fiber/handler"
+	"sandbox3.0/web/fiber/handler"
 )
 
 func main() {
@@ -22,14 +22,10 @@ func main() {
 	// initiate service
 	rs := repository.NewService(db.MysqlDB)
 
-	// initiate web handler
+	// initiate app & start
 	app := fiber.New(fiber.Config{
 		AppName: "Sandbox 3.0",
-		ServerHeader: fiber.MIMEApplicationJSON,
     })
 	wh := handler.NewWebHandler(rs, app)
-
-	// start server
-	wh.RegisterRoute()
-	wh.App.Listen(":3030")
+	wh.Start()
 }

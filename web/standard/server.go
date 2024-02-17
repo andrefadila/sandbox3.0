@@ -6,7 +6,7 @@ import (
 
 	"sandbox3.0/persistence"
 	"sandbox3.0/repository"
-	"sandbox3.0/web/handler"
+	"sandbox3.0/web/standard/handler"
 )
 
 func main() {
