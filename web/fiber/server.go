@@ -19,7 +19,7 @@ func main() {
 	defer db.Close()
 	db.Automigrate()
 
-	// initiate service
+	// initiate db service
 	rs := repository.NewService(db.MysqlDB)
 
 	// initiate app & start

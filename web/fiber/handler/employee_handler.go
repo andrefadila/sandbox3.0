@@ -8,9 +8,9 @@ import (
 	"sandbox3.0/persistence/model"
 )
 
-func (wh *WebHandler) GetDepartments(c *fiber.Ctx) error {
-	// get departments
-	depts, err := wh.rs.GetDepartments()
+func (wh *WebHandler) GetEmployees(c *fiber.Ctx) error {
+	// get employees
+	emps, err := wh.rs.GetEmployees()
 	if err != nil {
 		return fiber.NewError(fiber.StatusNotFound, err.Error())
 	}
@@ -18,7 +18,7 @@ func (wh *WebHandler) GetDepartments(c *fiber.Ctx) error {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["departments"] = depts
+	response["employees"] = emps
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -26,7 +26,7 @@ func (wh *WebHandler) GetDepartments(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).Send(jsonRes)
 }
 
-func (wh *WebHandler) GetDepartment(c *fiber.Ctx) error {
+func (wh *WebHandler) GetEmployee(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	// request validation
@@ -35,8 +35,8 @@ func (wh *WebHandler) GetDepartment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, valErr.Error())
 	}
 
-	// get department
-	dept, err := wh.rs.GetDepartment(idInt)
+	// get employee
+	emp, err := wh.rs.GetEmployee(idInt)
 	if err != nil {
 		return fiber.NewError(fiber.StatusNotFound, err.Error())
 	}
@@ -44,7 +44,7 @@ func (wh *WebHandler) GetDepartment(c *fiber.Ctx) error {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["department"] = dept
+	response["employee"] = emp
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -52,17 +52,17 @@ func (wh *WebHandler) GetDepartment(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).Send(jsonRes)
 }
 
-func (wh *WebHandler) CreateDepartment(c *fiber.Ctx) error {
-	var dept model.Department
+func (wh *WebHandler) CreateEmployee(c *fiber.Ctx) error {
+	var emp model.Employee
 
 	// request validation
-	valErr := c.BodyParser(&dept)
+	valErr := c.BodyParser(&emp)
 	if valErr != nil {
 		return fiber.NewError(fiber.StatusBadRequest, valErr.Error())
 	}
 
-	// create department
-	err := wh.rs.CreateDepartment(&dept)
+	// create employee
+	err := wh.rs.CreateEmployee(&emp)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -70,7 +70,7 @@ func (wh *WebHandler) CreateDepartment(c *fiber.Ctx) error {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["department"] = dept
+	response["employee"] = emp
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -78,22 +78,22 @@ func (wh *WebHandler) CreateDepartment(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).Send(jsonRes)
 }
 
-func (wh *WebHandler) UpdateDepartment(c *fiber.Ctx) error {
-	var dept model.Department
+func (wh *WebHandler) UpdateEmployee(c *fiber.Ctx) error {
+	var emp model.Employee
 
 	// request validation
 	id, val1Err := c.ParamsInt("id")
 	if val1Err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, val1Err.Error())
 	}
-	val2Err := c.BodyParser(&dept)
+	val2Err := c.BodyParser(&emp)
 	if val2Err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, val2Err.Error())
 	}
 
-	// update department
-	dept.ID = id
-	err := wh.rs.UpdateDepartment(&dept)
+	// update employee
+	emp.ID = id
+	err := wh.rs.UpdateEmployee(&emp)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
@@ -101,7 +101,7 @@ func (wh *WebHandler) UpdateDepartment(c *fiber.Ctx) error {
 	// success
 	response := make(map[string]interface{})
 	response["success"] = true
-	response["department"] = dept
+	response["employee"] = emp
 
 	// response
 	jsonRes, _ := json.Marshal(response)
@@ -109,8 +109,8 @@ func (wh *WebHandler) UpdateDepartment(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).Send(jsonRes)
 }
 
-func (wh *WebHandler) DeleteDepartment(c *fiber.Ctx) error {
-	var dept model.Department
+func (wh *WebHandler) DeleteEmployee(c *fiber.Ctx) error {
+	var emp model.Employee
 
 	// request validation
 	id, valErr := c.ParamsInt("id")
@@ -118,9 +118,9 @@ func (wh *WebHandler) DeleteDepartment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, valErr.Error())
 	}
 
-	// delete department
-	dept.ID = id
-	err := wh.rs.DeleteDepartment(&dept)
+	// delete employee
+	emp.ID = id
+	err := wh.rs.DeleteEmployee(&emp)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}

@@ -22,6 +22,12 @@ func (wh *WebHandler) Start() {
 	wh.App.Post("/departments", wh.CreateDepartment)
 	wh.App.Put("/departments/:id", wh.UpdateDepartment)
 	wh.App.Delete("/departments/:id", wh.DeleteDepartment)
+	// employees
+	wh.App.Get("/employees", wh.GetEmployees)
+	wh.App.Get("/employees/:id", wh.GetEmployee)
+	wh.App.Post("/employees", wh.CreateEmployee)
+	wh.App.Put("/employees/:id", wh.UpdateEmployee)
+	wh.App.Delete("/employees/:id", wh.DeleteEmployee)
 
 	// start listen
 	wh.App.Listen(":3030")
