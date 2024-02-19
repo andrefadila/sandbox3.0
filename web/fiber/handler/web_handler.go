@@ -16,7 +16,7 @@ func NewWebHandler(rs *repository.Service, app *fiber.App) *WebHandler {
 	return &WebHandler{rs, app}
 }
 
-func (wh *WebHandler) Start() {
+func (wh *WebHandler) Init() {
 	// Login route
 	wh.App.Post("/login", wh.Login)
 
@@ -36,8 +36,10 @@ func (wh *WebHandler) Start() {
 	wh.App.Post("/employees", wh.CreateEmployee)
 	wh.App.Put("/employees/:id", wh.UpdateEmployee)
 	wh.App.Delete("/employees/:id", wh.DeleteEmployee)
+}
 
-	// start listen
+func (wh *WebHandler) Start() {
+	wh.Init()
 	wh.App.Listen(":3030")
 }
 

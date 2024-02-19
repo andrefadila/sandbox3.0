@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -15,15 +14,8 @@ func (wh *WebHandler) GetDepartments(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusNotFound, err.Error())
 	}
 
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-	response["departments"] = depts
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true, "departments": depts})
 }
 
 func (wh *WebHandler) GetDepartment(c *fiber.Ctx) error {
@@ -41,15 +33,8 @@ func (wh *WebHandler) GetDepartment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusNotFound, err.Error())
 	}
 
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-	response["department"] = dept
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true, "department": dept})
 }
 
 func (wh *WebHandler) CreateDepartment(c *fiber.Ctx) error {
@@ -67,15 +52,8 @@ func (wh *WebHandler) CreateDepartment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-	response["department"] = dept
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true, "department": dept})
 }
 
 func (wh *WebHandler) UpdateDepartment(c *fiber.Ctx) error {
@@ -97,16 +75,8 @@ func (wh *WebHandler) UpdateDepartment(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
-
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-	response["department"] = dept
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true, "department": dept})
 }
 
 func (wh *WebHandler) DeleteDepartment(c *fiber.Ctx) error {
@@ -125,12 +95,6 @@ func (wh *WebHandler) DeleteDepartment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true})
 }

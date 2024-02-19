@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -15,15 +14,8 @@ func (wh *WebHandler) GetEmployees(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusNotFound, err.Error())
 	}
 
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-	response["employees"] = emps
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true, "employees": emps})
 }
 
 func (wh *WebHandler) GetEmployee(c *fiber.Ctx) error {
@@ -41,15 +33,8 @@ func (wh *WebHandler) GetEmployee(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusNotFound, err.Error())
 	}
 
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-	response["employee"] = emp
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true, "employee": emp})
 }
 
 func (wh *WebHandler) CreateEmployee(c *fiber.Ctx) error {
@@ -67,15 +52,8 @@ func (wh *WebHandler) CreateEmployee(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-	response["employee"] = emp
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true, "employee": emp})
 }
 
 func (wh *WebHandler) UpdateEmployee(c *fiber.Ctx) error {
@@ -98,15 +76,8 @@ func (wh *WebHandler) UpdateEmployee(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-	response["employee"] = emp
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true, "employee": emp})
 }
 
 func (wh *WebHandler) DeleteEmployee(c *fiber.Ctx) error {
@@ -125,12 +96,6 @@ func (wh *WebHandler) DeleteEmployee(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
 
-	// success
-	response := make(map[string]interface{})
-	response["success"] = true
-
 	// response
-	jsonRes, _ := json.Marshal(response)
-	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-	return c.Status(fiber.StatusOK).Send(jsonRes)
+	return c.JSON(fiber.Map{"success": true})
 }

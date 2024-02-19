@@ -26,9 +26,7 @@ func TestGetDepartments(t *testing.T) {
 		AppName: "Sandbox 3.0",
 	})
 	wh := NewWebHandler(rs, app)
-
-	// Create a new test server
-	wh.Start()
+	wh.Init()
 
 	// Login jwt
 	reqLogin := httptest.NewRequest("POST", "/login", strings.NewReader("user=admin&password=12345"))
