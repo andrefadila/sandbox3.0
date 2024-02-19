@@ -1,6 +1,7 @@
 package persistence
 
 import (
+	"errors"
 	"fmt"
 
 	"gorm.io/gorm"
@@ -21,14 +22,23 @@ func (db *DB) Automigrate() error {
 func (db *DB) MigrateAndSeed() error {
 	// Migrate the schema. This is an example for departments.
 	departments := &model.Department{}
-	if !db.MysqlDB.Migrator().HasTable(departments) {
-		err := db.MysqlDB.AutoMigrate(departments)
-		return fmt.Errorf("failed to migrate departments: %w", err)
+	if db.MysqlDB.Migrator().HasTable(departments) {
+		db.MysqlDB.Migrator().DropTable(departments)
 	}
 	employees := &model.Employee{}
+	if db.MysqlDB.Migrator().HasTable(employees) {
+		db.MysqlDB.Migrator().DropTable(employees)
+	}
+	if err := db.MysqlDB.AutoMigrate(departments, employees); err != nil {
+		return fmt.Errorf("failed to migrate departments and employees: %w", err)
+	}
+
+	// Validate the table creation.
+	if !db.MysqlDB.Migrator().HasTable(departments) {
+		return errors.New("failed to create departments table")
+	}
 	if !db.MysqlDB.Migrator().HasTable(employees) {
-		err := db.MysqlDB.AutoMigrate(employees)
-		return fmt.Errorf("failed to migrate employees: %w", err)
+		return errors.New("failed to create employees table")
 	}
 
 	// When we have the table, we can create some records (seed data).
