@@ -21,11 +21,11 @@ func (db *DB) Automigrate() error {
 
 func (db *DB) MigrateAndSeed() error {
 	// Migrate the schema. This is an example for departments.
-	var departments model.Department
+	departments := &model.Department{}
 	if db.MysqlDB.Migrator().HasTable(departments) {
 		db.MysqlDB.Migrator().DropTable(departments)
 	}
-	var employees model.Employee
+	employees := &model.Employee{}
 	if db.MysqlDB.Migrator().HasTable(employees) {
 		db.MysqlDB.Migrator().DropTable(employees)
 	}
