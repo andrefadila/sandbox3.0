@@ -18,7 +18,7 @@ func TestFiberGetDepartments(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
-	db.MigrateAndSeed()
+	// db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
 	// Initiate web handler
