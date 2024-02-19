@@ -15,7 +15,7 @@ import (
 	"sandbox3.0/repository"
 )
 
-func TestGetDepartments(t *testing.T) {
+func TestStandardGetDepartments(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
@@ -51,7 +51,7 @@ func TestGetDepartments(t *testing.T) {
 	require.NotNilf(t, response["departments"], "expected departments to be not nil, but got nil")
 }
 
-func TestGetDepartment(t *testing.T) {
+func TestStandardGetDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
@@ -87,7 +87,7 @@ func TestGetDepartment(t *testing.T) {
 	require.NotNilf(t, response["department"], "expected department to be not nil, but got nil")
 }
 
-func TestCreateDepartment(t *testing.T) {
+func TestStandardCreateDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
@@ -132,7 +132,7 @@ func TestCreateDepartment(t *testing.T) {
 	require.Equalf(t, "Dept Test", dept.Name, "expected department name to be Dept Test, but got %s", dept.Name)
 }
 
-func TestUpdateDepartment(t *testing.T) {
+func TestStandardUpdateDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
@@ -181,7 +181,7 @@ func TestUpdateDepartment(t *testing.T) {
 	require.Equalf(t, "Updated Dept", dept.Name, "expected department name to be Updated Dept, but got %s", dept.Name)
 }
 
-func TestDeleteDepartment(t *testing.T) {
+func TestStandardDeleteDepartment(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()

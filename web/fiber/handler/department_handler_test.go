@@ -14,7 +14,7 @@ import (
 	"sandbox3.0/repository"
 )
 
-func TestGetDepartments(t *testing.T) {
+func TestFiberGetDepartments(t *testing.T) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
 	defer db.Close()
