@@ -35,12 +35,10 @@ func GeneratePrimesSieve(limit int) []int {
 		return []int{}
 	}
 
-	// Initiate nums and sieve.
-	nums := make([]int, limit-1)
+	// Create sieve.
 	sieve := make([]bool, limit+1)
 	for i := 2; i <= limit; i++ {
 		sieve[i] = true
-		nums[i-2] = i
 	}
 	p := 2
 	for p*p <= limit {
@@ -51,17 +49,16 @@ func GeneratePrimesSieve(limit int) []int {
 		}
 		p += 1
 	}
-	sieve = sieve[2:] // Slice sieve to align with nums.
 
 	// Check prime number with buffered channel and goroutine.
 	var wg sync.WaitGroup
-	results := make(chan int, len(nums))
-	for i := 0; i < len(nums); i++ {
+	results := make(chan int, limit)
+	for i := 0; i <= limit; i++ {
 		wg.Add(1)
 		go func() {
             defer wg.Done()
             if sieve[i] {
-                results <- nums[i]
+                results <- i
             }
         }()
 	}
