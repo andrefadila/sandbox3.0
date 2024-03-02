@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -14,10 +15,9 @@ import (
 	"sandbox3.0/repository"
 )
 
-func TestFiberGetDepartments(t *testing.T) {
+func setupWebFiberSuite(t *testing.T) (*fiber.App, func(t *testing.T)) {
 	// Initiate service
 	db, _ := persistence.OpenMySqlConn()
-	defer db.Close()
 	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
@@ -27,6 +27,19 @@ func TestFiberGetDepartments(t *testing.T) {
 	})
 	wh := NewWebHandler(rs, app)
 	wh.Init()
+	require.NotNilf(t, app, "app must be not nil")
+
+	// Return a function to teardown the test.
+	return app, func(t *testing.T) {
+		fmt.Println("Teardown suite")
+		defer db.Close()
+	}
+}
+
+func TestFiberGetDepartments(t *testing.T) {
+	// Suite starter
+	app, teardownSuite := setupWebFiberSuite(t)
+	defer teardownSuite(t)
 
 	// Login jwt
 	reqLogin := httptest.NewRequest("POST", "/login", strings.NewReader("user=admin&password=12345"))
