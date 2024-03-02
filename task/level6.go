@@ -52,25 +52,25 @@ func GeneratePrimesSieve(limit int) []int {
 
 	// Check prime number with buffered channel and goroutine.
 	var wg sync.WaitGroup
-	results := make(chan int, limit)
+	result := make(chan int, limit)
 	for i := 0; i <= limit; i++ {
 		wg.Add(1)
 		go func() {
             defer wg.Done()
             if sieve[i] {
-                results <- i
+                result <- i
             }
         }()
 	}
 
-	// Close the results channel after all goroutines have finished.
+	// Close the result channel after all goroutines have finished.
     wg.Wait()
-    close(results)
+    close(result)
     
     // Collect prime number and sort.
-	primes := make([]int, len(results))
+	primes := make([]int, len(result))
     j := 0
-	for prime := range results {
+	for prime := range result {
         primes[j] = prime
         j++
 	}

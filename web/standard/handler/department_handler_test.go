@@ -15,19 +15,31 @@ import (
 	"sandbox3.0/repository"
 )
 
-func TestStandardGetDepartments(t *testing.T) {
-	// Initiate service
+func setupWebStandardSuite(t *testing.T) (*httptest.Server, func(t *testing.T)) {
+	// Initiate service.
 	db, _ := persistence.OpenMySqlConn()
-	defer db.Close()
 	db.MigrateAndSeed()
 	rs := repository.NewService(db.MysqlDB)
 
-	// Initiate web handler
+	// Initiate web handler.
 	wh := NewWebHandler(rs)
 
-	// Create a new test server
+	// Create a new test server.
 	srv := httptest.NewServer(wh.RouteHandler())
-	defer srv.Close()
+	require.NotNilf(t, srv, "srv must be not nil")
+
+	// Return a function to teardown the test.
+	return srv, func(t *testing.T) {
+		fmt.Println("Teardown suite")
+		defer db.Close()
+		defer srv.Close()
+	}
+}
+
+func TestStandardGetDepartments(t *testing.T) {
+	// Suite starter
+	srv, teardownSuite := setupWebStandardSuite(t)
+	defer teardownSuite(t)
 
 	// Create a new request
 	resp, err := http.Get(srv.URL + "/departments")
@@ -52,18 +64,9 @@ func TestStandardGetDepartments(t *testing.T) {
 }
 
 func TestStandardGetDepartment(t *testing.T) {
-	// Initiate service
-	db, _ := persistence.OpenMySqlConn()
-	defer db.Close()
-	db.MigrateAndSeed()
-	rs := repository.NewService(db.MysqlDB)
-
-	// Initiate web handler
-	wh := NewWebHandler(rs)
-
-	// Create a new test server
-	srv := httptest.NewServer(wh.RouteHandler())
-	defer srv.Close()
+	// Suite starter
+	srv, teardownSuite := setupWebStandardSuite(t)
+	defer teardownSuite(t)
 
 	// Create a new request
 	resp, err := http.Get(srv.URL + "/departments/1")
@@ -88,18 +91,9 @@ func TestStandardGetDepartment(t *testing.T) {
 }
 
 func TestStandardCreateDepartment(t *testing.T) {
-	// Initiate service
-	db, _ := persistence.OpenMySqlConn()
-	defer db.Close()
-	db.MigrateAndSeed()
-	rs := repository.NewService(db.MysqlDB)
-
-	// Initiate web handler
-	wh := NewWebHandler(rs)
-
-	// Create a new test server
-	srv := httptest.NewServer(wh.RouteHandler())
-	defer srv.Close()
+	// Suite starter
+	srv, teardownSuite := setupWebStandardSuite(t)
+	defer teardownSuite(t)
 
 	// Send a POST request to create the department
 	var jsonStr = []byte(`{"name":"Dept Test"}`)
@@ -133,18 +127,9 @@ func TestStandardCreateDepartment(t *testing.T) {
 }
 
 func TestStandardUpdateDepartment(t *testing.T) {
-	// Initiate service
-	db, _ := persistence.OpenMySqlConn()
-	defer db.Close()
-	db.MigrateAndSeed()
-	rs := repository.NewService(db.MysqlDB)
-
-	// Initiate web handler
-	wh := NewWebHandler(rs)
-
-	// Create a new test server
-	srv := httptest.NewServer(wh.RouteHandler())
-	defer srv.Close()
+	// Suite starter
+	srv, teardownSuite := setupWebStandardSuite(t)
+	defer teardownSuite(t)
 
 	// Create a new request
 	reqBody := []byte(`{"name":"Updated Dept"}`)
