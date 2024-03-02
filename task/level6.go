@@ -1,7 +1,7 @@
 package task
 
 import (
-	// "fmt"
+	"sort"
 	"sync"
 )
 
@@ -30,11 +30,18 @@ func GeneratePrimes(limit int) []int {
 }
 
 func GeneratePrimesSieve(limit int) []int {
-	sieve := make([]bool, limit+1)
-    for i := 2; i <= limit; i++ {
-		sieve[i] = true
+	// Validation.
+	if limit < 1 {
+		return []int{}
 	}
-    
+
+	// Initiate nums and sieve.
+	nums := make([]int, limit-1)
+	sieve := make([]bool, limit+1)
+	for i := 2; i <= limit; i++ {
+		sieve[i] = true
+		nums[i-2] = i
+	}
 	p := 2
 	for p*p <= limit {
 		if sieve[p] {
@@ -44,23 +51,34 @@ func GeneratePrimesSieve(limit int) []int {
 		}
 		p += 1
 	}
-	// fmt.Println(sieve)
-    
-	primes := make([]int, 0, limit)
-	for p = 2; p <= limit; p++ {
-		if sieve[p] {
-			primes = append(primes, p)
-		}
+	sieve = sieve[2:] // Slice sieve to align with nums.
+
+	// Check prime number with buffered channel and goroutine.
+	var wg sync.WaitGroup
+	results := make(chan int, len(nums))
+	for i := 0; i < len(nums); i++ {
+		wg.Add(1)
+		go func() {
+            defer wg.Done()
+            if sieve[i] {
+                results <- nums[i]
+            }
+        }()
 	}
+
+	// Close the results channel after all goroutines have finished.
+    wg.Wait()
+    close(results)
+    
+    // Collect prime number and sort.
+	primes := make([]int, len(results))
+    j := 0
+	for prime := range results {
+        primes[j] = prime
+        j++
+	}
+    sort.Ints(primes)
 
 	return primes
 }
 
-func CheckPrimes(nums []int, results chan<- int, wg *sync.WaitGroup) {
-	defer wg.Done()
-	for _, num := range nums {
-		if isPrime(num) {
-			results <- num
-		}
-	}
-}
