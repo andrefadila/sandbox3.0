@@ -54,12 +54,7 @@ func TestGeneratePrimesSieve(t *testing.T) {
 
 func BenchmarkGeneratePrimes(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		task.GeneratePrimes(1000)
-	}
-}
-
-func BenchmarkGeneratePrimesSieve(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+		// task.GeneratePrimes(1000)
 		task.GeneratePrimesSieve(1000)
 	}
 }

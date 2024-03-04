@@ -1,0 +1,16 @@
+goos: darwin
+goarch: amd64
+pkg: sandbox3.0/test
+cpu: Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz
+BenchmarkGeneratePrimes-8   	   24824	     45278 ns/op	    4088 B/op	       9 allocs/op
+BenchmarkGeneratePrimes-8   	   27164	     44459 ns/op	    4088 B/op	       9 allocs/op
+BenchmarkGeneratePrimes-8   	   26847	     46297 ns/op	    4088 B/op	       9 allocs/op
+BenchmarkGeneratePrimes-8   	   24081	     50017 ns/op	    4088 B/op	       9 allocs/op
+BenchmarkGeneratePrimes-8   	   26937	     46587 ns/op	    4088 B/op	       9 allocs/op
+BenchmarkGeneratePrimes-8   	   23894	     45405 ns/op	    4088 B/op	       9 allocs/op
+BenchmarkGeneratePrimes-8   	   25860	     46518 ns/op	    4088 B/op	       9 allocs/op
+BenchmarkGeneratePrimes-8   	   24260	     45275 ns/op	    4088 B/op	       9 allocs/op
+BenchmarkGeneratePrimes-8   	   25938	     47623 ns/op	    4088 B/op	       9 allocs/op
+BenchmarkGeneratePrimes-8   	   26250	     47324 ns/op	    4088 B/op	       9 allocs/op
+PASS
+ok  	sandbox3.0/test	17.129s
